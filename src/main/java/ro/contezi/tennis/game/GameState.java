@@ -8,7 +8,14 @@ public class GameState {
 	public GameState(GameScore server, GameScore receiver) {
 		this.server = server;
 		this.receiver = receiver;
-		this.result = GameResult.UNDECIDED;
+		this.result = computeResult();
+	}
+
+	private GameResult computeResult() {
+		if (server == GameScore.ADVANTAGE) {
+			return GameResult.SERVER_WINS;
+		}
+		return GameResult.UNDECIDED;
 	}
 
 	public GameResult getResult() {
