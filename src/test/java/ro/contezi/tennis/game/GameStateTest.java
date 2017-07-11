@@ -2,32 +2,37 @@ package ro.contezi.tennis.game;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.assertj.core.api.AbstractComparableAssert;
 import org.junit.Test;
 
 public class GameStateTest {
 
 	@Test
 	public void gameIsUndecidedInTheBeginning() {
-		assertThat(new GameState(GameScore.ZERO, GameScore.ZERO).getResult()).isEqualTo(GameResult.UNDECIDED);
+		assertResultOf(GameScore.ZERO, GameScore.ZERO).isEqualTo(GameResult.UNDECIDED);
 	}
 
 	@Test
 	public void serverWinsWithAdvantageToThirty() throws Exception {
-		assertThat(new GameState(GameScore.ADVANTAGE, GameScore.THIRTY).getResult()).isEqualTo(GameResult.SERVER_WINS);
+		assertResultOf(GameScore.ADVANTAGE, GameScore.THIRTY).isEqualTo(GameResult.SERVER_WINS);
 	}
 	
 	@Test
 	public void gameIsUndecidedWithAdvantageToForty() throws Exception {
-		assertThat(new GameState(GameScore.ADVANTAGE, GameScore.FORTY).getResult()).isEqualTo(GameResult.UNDECIDED);
+		assertResultOf(GameScore.ADVANTAGE, GameScore.FORTY).isEqualTo(GameResult.UNDECIDED);
 	}
 	
 	@Test
 	public void receiverWinsWithThirtyToAdvantage() throws Exception {
-		assertThat(new GameState(GameScore.THIRTY, GameScore.ADVANTAGE).getResult()).isEqualTo(GameResult.RECEIVER_WINS);
+		assertResultOf(GameScore.THIRTY, GameScore.ADVANTAGE).isEqualTo(GameResult.RECEIVER_WINS);
 	}
 	
 	@Test
 	public void gameIsUndecidedWithFortyToAdvantage() throws Exception {
-		assertThat(new GameState(GameScore.FORTY, GameScore.ADVANTAGE).getResult()).isEqualTo(GameResult.UNDECIDED);
+		assertResultOf(GameScore.FORTY, GameScore.ADVANTAGE).isEqualTo(GameResult.UNDECIDED);
+	}
+
+	private AbstractComparableAssert<?, GameResult> assertResultOf(GameScore server, GameScore receiver) {
+		return assertThat(new GameState(server, receiver).getResult());
 	}
 }
