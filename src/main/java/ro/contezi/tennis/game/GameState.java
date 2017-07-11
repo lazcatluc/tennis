@@ -12,18 +12,21 @@ public class GameState {
 	}
 
 	private GameResult computeResult() {
-		if (server == GameScore.ADVANTAGE && receiver.compareTo(GameScore.FORTY) < 0) {
+		if (hasDecisiveAdvantage(server, receiver)) {
 			return GameResult.SERVER_WINS;
 		}
-		if (receiver == GameScore.ADVANTAGE && server.compareTo(GameScore.FORTY) < 0) {
+		if (hasDecisiveAdvantage(receiver, server)) {
 			return GameResult.RECEIVER_WINS;
 		}
 		return GameResult.UNDECIDED;
+	}
+	
+	private boolean hasDecisiveAdvantage(GameScore advantaged, GameScore disadvantaged) {
+		return advantaged == GameScore.ADVANTAGE && disadvantaged.compareTo(GameScore.FORTY) < 0;
 	}
 
 	public GameResult getResult() {
 		return result;
 	}
-	
 	
 }
