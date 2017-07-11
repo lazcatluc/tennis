@@ -15,6 +15,9 @@ public class GameState {
 		if (server == GameScore.ADVANTAGE && receiver.compareTo(GameScore.FORTY) < 0) {
 			return GameResult.SERVER_WINS;
 		}
+		if (receiver == GameScore.ADVANTAGE && server.compareTo(GameScore.FORTY) < 0) {
+			return GameResult.RECEIVER_WINS;
+		}
 		return GameResult.UNDECIDED;
 	}
 
