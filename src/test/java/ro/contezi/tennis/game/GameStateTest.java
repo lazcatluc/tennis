@@ -15,4 +15,9 @@ public class GameStateTest {
 	public void serverWinsWithAdvantageToThirty() throws Exception {
 		assertThat(new GameState(GameScore.ADVANTAGE, GameScore.THIRTY).getResult()).isEqualTo(GameResult.SERVER_WINS);
 	}
+	
+	@Test
+	public void gameIsUndecidedWithAdvantageToForty() throws Exception {
+		assertThat(new GameState(GameScore.ADVANTAGE, GameScore.FORTY).getResult()).isEqualTo(GameResult.UNDECIDED);
+	}
 }

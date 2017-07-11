@@ -12,7 +12,7 @@ public class GameState {
 	}
 
 	private GameResult computeResult() {
-		if (server == GameScore.ADVANTAGE) {
+		if (server == GameScore.ADVANTAGE && receiver.compareTo(GameScore.FORTY) < 0) {
 			return GameResult.SERVER_WINS;
 		}
 		return GameResult.UNDECIDED;
