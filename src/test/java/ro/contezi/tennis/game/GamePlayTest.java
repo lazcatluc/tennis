@@ -19,4 +19,10 @@ public class GamePlayTest {
 		assertThat(gamePlay.loseServe(new GameState(GameScore.ZERO, GameScore.ZERO)))
 				.isEqualTo(new GameState(GameScore.ZERO, GameScore.FIFTEEN));
 	}
+	
+	@Test
+	public void winningTheServeWhenReceiverHasAdvantageMovesToDeuce() {
+		assertThat(gamePlay.winServe(new GameState(GameScore.FORTY, GameScore.ADVANTAGE)))
+				.isEqualTo(new GameState(GameScore.FORTY, GameScore.FORTY));
+	}
 }
