@@ -25,4 +25,22 @@ public class GamePlayTest {
 		assertThat(gamePlay.winServe(new GameState(GameScore.FORTY, GameScore.ADVANTAGE)))
 				.isEqualTo(new GameState(GameScore.FORTY, GameScore.FORTY));
 	}
+	
+	@Test
+	public void losingTheServeWhenServerHasAdvantageMovesToDeuce() {
+		assertThat(gamePlay.loseServe(new GameState(GameScore.ADVANTAGE, GameScore.FORTY)))
+				.isEqualTo(new GameState(GameScore.FORTY, GameScore.FORTY));
+	}
+	
+	@Test
+	public void winningTheServeWhenServerHasAdvantageMovesToServerWin() {
+		assertThat(gamePlay.winServe(new GameState(GameScore.ADVANTAGE, GameScore.FORTY)))
+				.isEqualTo(new GameState(GameScore.ADVANTAGE, GameScore.THIRTY));
+	}
+	
+	@Test
+	public void losingTheServeWhenReceiverHasAdvantageMovesToReceiverWin() {
+		assertThat(gamePlay.loseServe(new GameState(GameScore.FORTY, GameScore.ADVANTAGE)))
+				.isEqualTo(new GameState(GameScore.THIRTY, GameScore.ADVANTAGE));
+	}
 }
