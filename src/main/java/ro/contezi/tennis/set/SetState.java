@@ -14,6 +14,13 @@ public class SetState {
     }
     
     public SetResult getResult() {
+        if (firstServerGamesWon == 6 && firstReceiverGamesWon < 5) {
+            return SetResult.FIRST_SERVER_WINS;
+        }
+        
+        if (firstReceiverGamesWon == 6 && firstServerGamesWon < 5) {
+            return SetResult.FIRST_RECEIVER_WINS;
+        }
         return SetResult.UNDECIDED;
     }
 }
