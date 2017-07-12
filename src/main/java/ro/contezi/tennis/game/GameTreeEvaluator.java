@@ -3,6 +3,8 @@ package ro.contezi.tennis.game;
 import java.util.HashMap;
 import java.util.Map;
 
+import ro.contezi.tennis.game.play.GamePlay;
+
 public class GameTreeEvaluator {
 	private final GameState deuce = new GameState(GameScore.FORTY, GameScore.FORTY);
 	private final Map<GameState, Double> estimatedScore = new HashMap<>();
@@ -15,16 +17,21 @@ public class GameTreeEvaluator {
 
 	private Double computeDeuceValue() {
 		double p = probabilityOfServerWinningAPoint;
-		return (2 * p - 1) / (2 * p * p - 2 * p + 1);
+		return (p * p) / (2 * p * p - 2 * p + 1);
 	}
 
 	public double getEstimatedScore(GameState state) {
-		if (state.getServer() == GameScore.ADVANTAGE) {
+		if (state.getResult() == GameResult.SERVER_WINS) {
 			return 1;
 		}
-		if (state.getReceiver() == GameScore.ADVANTAGE) {
-			return -1;
+		if (state.getResult() == GameResult.RECEIVER_WINS) {
+			return 0;
 		}
-		return estimatedScore.get(state);
+		return estimatedScore.computeIfAbsent(state, uncomputed -> {
+			GamePlay forState = GamePlay.forState(uncomputed);
+			double winScore = getEstimatedScore(forState.winServe());
+			double loseScore = getEstimatedScore(forState.loseServe());
+			return winScore * probabilityOfServerWinningAPoint + loseScore * (1 - probabilityOfServerWinningAPoint);
+		});
 	}
 }

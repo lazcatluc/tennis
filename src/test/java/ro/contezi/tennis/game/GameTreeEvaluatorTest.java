@@ -13,9 +13,9 @@ public class GameTreeEvaluatorTest {
 	}
 
 	@Test
-	public void whenReceiverHasWonScoreIsMinusOne() {
+	public void whenReceiverHasWonScoreIsZero() {
 		assertThat(new GameTreeEvaluator(0).getEstimatedScore(new GameState(GameScore.THIRTY, GameScore.ADVANTAGE)))
-			.isEqualTo(-1);
+			.isEqualTo(0);
 	}
 	
 	@Test
@@ -26,16 +26,23 @@ public class GameTreeEvaluatorTest {
 	}
 	
 	@Test
-	public void deuceScoreIsMinus1WhenWinProbabilityIs0() throws Exception {
+	public void deuceScoreIs0WhenWinProbabilityIs0() throws Exception {
 		assertThat(new GameTreeEvaluator(0).getEstimatedScore(new GameState(GameScore.FORTY, GameScore.FORTY)))
-			.isEqualTo(-1);
+			.isEqualTo(0);
 				
 	}
 	
 	@Test
-	public void deuceScoreIsZero1WhenWinProbabilityIsEqual() throws Exception {
+	public void deuceScoreIsEqualWhenWinProbabilityIsEqual() throws Exception {
 		assertThat(new GameTreeEvaluator(0.5).getEstimatedScore(new GameState(GameScore.FORTY, GameScore.FORTY)))
-			.isEqualTo(0);
+			.isEqualTo(0.5);
+				
+	}
+	
+	@Test
+	public void initialStateScoreIsEqualWhenWinProbabilityIsEqual() throws Exception {
+		assertThat(new GameTreeEvaluator(0.5).getEstimatedScore(new GameState(GameScore.ZERO, GameScore.ZERO)))
+			.isEqualTo(0.5);
 				
 	}
 }
