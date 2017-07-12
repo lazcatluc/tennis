@@ -6,13 +6,12 @@ import java.util.Map;
 import ro.contezi.tennis.game.play.GamePlay;
 
 public class GameTreeEvaluator {
-	private final GameState deuce = new GameState(GameScore.FORTY, GameScore.FORTY);
 	private final Map<GameState, Double> estimatedScore = new HashMap<>();
 	private final double probabilityOfServerWinningAPoint;
 
 	public GameTreeEvaluator(double probabilityOfServerWinningAPoint) {
 		this.probabilityOfServerWinningAPoint = probabilityOfServerWinningAPoint;
-		estimatedScore.put(deuce, computeDeuceValue());
+		estimatedScore.put(new GameState(GameScore.FORTY, GameScore.FORTY), computeDeuceValue());
 	}
 
 	private Double computeDeuceValue() {
