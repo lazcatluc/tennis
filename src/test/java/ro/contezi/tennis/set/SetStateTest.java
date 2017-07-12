@@ -22,6 +22,11 @@ public class SetStateTest {
     }
     
     @Test
+    public void resultIsFirstServerWinsAt75() {
+        assertThat(new SetState(7, 5).getResult()).isEqualTo(SetResult.FIRST_SERVER_WINS);
+    }
+    
+    @Test
     public void resultIsFirstReceiverWinsAt46() {
         assertThat(new SetState(4, 6).getResult()).isEqualTo(SetResult.FIRST_RECEIVER_WINS);
     }
@@ -29,5 +34,10 @@ public class SetStateTest {
     @Test
     public void resultIsUndecidedAt56() {
         assertThat(new SetState(5, 6).getResult()).isEqualTo(SetResult.UNDECIDED);
+    }
+    
+    @Test
+    public void resultIsFirstReceiverWinsAt57() {
+        assertThat(new SetState(5, 7).getResult()).isEqualTo(SetResult.FIRST_RECEIVER_WINS);
     }
 }
