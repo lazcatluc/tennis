@@ -2,10 +2,6 @@ package ro.contezi.tennis.set;
 
 public class TieBreakSetState extends SetState {
 
-    public TieBreakSetState() {
-        super();
-    }
-    
     public TieBreakSetState(int firstServerGamesWon, int firstReceiverGamesWon) {
         super(firstServerGamesWon, firstReceiverGamesWon);
     }
