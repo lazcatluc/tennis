@@ -40,4 +40,9 @@ public class SetStateTest {
     public void resultIsFirstReceiverWinsAt57() {
         assertThat(new SetState(5, 7).getResult()).isEqualTo(SetResult.FIRST_RECEIVER_WINS);
     }
+    
+    @Test
+    public void resultIsUndecidedAt89() {
+        assertThat(new SetState(8, 9).getResult()).isEqualTo(SetResult.UNDECIDED);
+    }
 }
