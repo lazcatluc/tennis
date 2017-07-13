@@ -2,6 +2,7 @@ package ro.contezi.tennis.set;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 import ro.contezi.tennis.game.GameScore;
 import ro.contezi.tennis.game.GameState;
@@ -34,6 +35,10 @@ public class SetTreeEvaluator {
                 .getEstimatedScore(new GameState(GameScore.ZERO, GameScore.ZERO));
     }
     
+    protected BiFunction<Integer, Integer, ? extends SetState> stateFactory() {
+        return SetState::new;
+    }
+    
     public Double getEstimatedScore(SetState setState) {
         return estimatedScore.computeIfAbsent(setState, state -> {
             if (setState.getResult() == SetResult.FIRST_SERVER_WINS) {
@@ -43,9 +48,9 @@ public class SetTreeEvaluator {
                 return 0.0;
             }
             Double firstServerWins = getEstimatedScore(
-                    new SetState(state.getFirstServerGamesWon() + 1, state.getFirstReceiverGamesWon()));
+                    stateFactory().apply(state.getFirstServerGamesWon() + 1, state.getFirstReceiverGamesWon()));
             Double firstReceiverWins = getEstimatedScore(
-                    new SetState(state.getFirstServerGamesWon(), state.getFirstReceiverGamesWon() + 1));
+                    stateFactory().apply(state.getFirstServerGamesWon(), state.getFirstReceiverGamesWon() + 1));
             boolean firstServerServesNow = (state.getFirstServerGamesWon() + state.getFirstReceiverGamesWon()) % 2 == 0;
             if (firstServerServesNow) {
                 return probabilityOfFirstServerWinningAPointWhenServing * firstServerWins +
