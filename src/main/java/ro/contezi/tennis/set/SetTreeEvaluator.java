@@ -8,7 +8,7 @@ import ro.contezi.tennis.game.GameState;
 import ro.contezi.tennis.game.GameTreeEvaluator;
 
 public class SetTreeEvaluator {
-    private final Map<GameState, Double> estimatedScore = new HashMap<>();
+    private final Map<SetState, Double> estimatedScore = new HashMap<>();
     private final double probabilityOfFirstServerWinningAPointWhenServing;
     private final double probabilityOfFirstReceiverWinningAPointWhenServing;
     
@@ -16,9 +16,10 @@ public class SetTreeEvaluator {
             double probabilityOfFirstReceiverWinningAPointWhenServing) {
         this.probabilityOfFirstServerWinningAPointWhenServing = probabilityOfFirstServerWinningAPointWhenServing;
         this.probabilityOfFirstReceiverWinningAPointWhenServing = probabilityOfFirstReceiverWinningAPointWhenServing;
+        estimatedScore.put(new SetState(SetState.GAMES_TO_WIN, SetState.GAMES_TO_WIN), computeDeuceValue());
     }
     
-    protected Double computeDeuceValue() {
+    private Double computeDeuceValue() {
         double p1 = winGameOnServeProbability(probabilityOfFirstServerWinningAPointWhenServing);
         double p2 = winGameOnServeProbability(probabilityOfFirstReceiverWinningAPointWhenServing);
         double probabilityFirstServerWinsBoth = p1 * (1 - p2);
@@ -31,5 +32,27 @@ public class SetTreeEvaluator {
     private double winGameOnServeProbability(double winServeProbability) {
         return new GameTreeEvaluator(winServeProbability)
                 .getEstimatedScore(new GameState(GameScore.ZERO, GameScore.ZERO));
+    }
+    
+    public Double getEstimatedScore(SetState setState) {
+        return estimatedScore.computeIfAbsent(setState, state -> {
+            if (setState.getResult() == SetResult.FIRST_SERVER_WINS) {
+                return 1.0;
+            }
+            if (setState.getResult() == SetResult.FIRST_RECEIVER_WINS) {
+                return 0.0;
+            }
+            Double firstServerWins = getEstimatedScore(
+                    new SetState(state.getFirstServerGamesWon() + 1, state.getFirstReceiverGamesWon()));
+            Double firstReceiverWins = getEstimatedScore(
+                    new SetState(state.getFirstServerGamesWon(), state.getFirstReceiverGamesWon() + 1));
+            boolean firstServerServesNow = (state.getFirstServerGamesWon() + state.getFirstReceiverGamesWon()) % 2 == 0;
+            if (firstServerServesNow) {
+                return probabilityOfFirstServerWinningAPointWhenServing * firstServerWins +
+                       (1 - probabilityOfFirstServerWinningAPointWhenServing) * firstReceiverWins;
+            }
+            return (1 - probabilityOfFirstReceiverWinningAPointWhenServing) * firstServerWins +
+                    probabilityOfFirstReceiverWinningAPointWhenServing * firstReceiverWins;
+        });
     }
 }

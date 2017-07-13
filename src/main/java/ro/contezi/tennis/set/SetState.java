@@ -51,4 +51,11 @@ public class SetState {
         return true;
     }
     
+    public int getFirstServerGamesWon() {
+        return firstServerGamesWon;
+    }
+
+    public int getFirstReceiverGamesWon() {
+        return firstReceiverGamesWon;
+    }
 }
