@@ -19,6 +19,14 @@ public class SetTreeEvaluator {
         this.probabilityOfFirstReceiverWinningAPointWhenServing = probabilityOfFirstReceiverWinningAPointWhenServing;
         estimatedScore.put(new SetState(SetState.GAMES_TO_WIN, SetState.GAMES_TO_WIN), computeDeuceValue());
     }
+
+    protected SetTreeEvaluator(double probabilityOfFirstServerWinningAPointWhenServing,
+                               double probabilityOfFirstReceiverWinningAPointWhenServing,
+                               Double deuceValue) {
+        this.probabilityOfFirstServerWinningAPointWhenServing = probabilityOfFirstServerWinningAPointWhenServing;
+        this.probabilityOfFirstReceiverWinningAPointWhenServing = probabilityOfFirstReceiverWinningAPointWhenServing;
+        estimatedScore.put(new SetState(SetState.GAMES_TO_WIN, SetState.GAMES_TO_WIN), deuceValue);
+    }
     
     private Double computeDeuceValue() {
         double p1 = winGameOnServeProbability(probabilityOfFirstServerWinningAPointWhenServing);
